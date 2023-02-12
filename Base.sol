@@ -11,7 +11,6 @@ contract Base is Ownable {
 
   // SafeMathライブラリーを使用して、オーバーフロー等の対策を行う
   using SafeMath for uint;
-  using SafeMath8 for uint8;
 
   // 新しいKittyがインスタンス化されたときにトランザクションログを出して外部からその内容を確認するために記述する。
   event NewKitty(string name, uint owner);
@@ -26,10 +25,10 @@ contract Base is Ownable {
   // Kitty構造体の配列をkittiesという名前で定義
   // これ以下のcontract変数はイーサリアムブロックチェーンに保存される。更新にはガス代が必要になる。
   Kitty[] kitties;
-  // ユーザのイーサリウムアドレス（キー）から、そのアドレスが所有しているkittiesのid配列（バリュー）を確認できるように定義
+  // ユーザのイーサリウムアドレス（キー）から、そのアドレスが所有しているkittiesのid（バリュー）を確認できるように定義
   // addressは20バイトの値であり、イーサリアムネットワーク上でのアカウントを意味する、公開鍵から作成される
   // publicに設定されている変数はこのcontract内外から値を参照することができる
-  mapping (address => uint[]) public ownerToKitty;
+  mapping (address => uint) public ownerToKitty;
   // イーサリウムアドレスがと、そのアドレスが所有するkittyの数のマッピング
   mapping (address => uint) public ownerKittyCount;
 
@@ -46,7 +45,7 @@ contract Base is Ownable {
     // Kittyインスタンスを作成してkitties配列にpushする、levelは最初は1固定
     kitties.push(Kitty(_name, 1));
     // ownerToKittyマッピングに新しいkitties idを追加, msg.senderは関数を実行したイーサリウムアドレスを指す
-    ownerToKitty[msg.sender].push(id);
+    ownerToKitty[msg.sender] = id;
     // ownerKittyCountを更新
     ownerKittyCount[msg.sender].add(1);
     // emitによって上で定義したeventを実際にトランザクションログに出力させる

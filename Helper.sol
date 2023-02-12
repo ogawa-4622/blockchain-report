@@ -7,6 +7,8 @@ import "./Base.sol";
 // Baseコントラクトを継承してHelperコントラクトを定義
 contract Helper is Base {
 
+  using SafeMath8 for uint8;
+
   // 1 ether = 10^18 wei に変換される
   uint public levelUpFee = 0.001 ether;
 
@@ -34,7 +36,8 @@ contract Helper is Base {
   // このスマートコントラクトアドレスにあるethをコントラクトをデプロイしたアドレスに移動させる関数
   // コントラクトのオーナー以外は使用できない
   function withdraw() external onlyOwner {
-    address _owner = owner();
+    // payable設定されているaddressにのみsend, transferが使用可能
+    address payable _owner = payable(owner());
     // このコントラクトアドレスにある残高をすべてオーナーのアドレスに移動する
     _owner.transfer(address(this).balance);
   }
