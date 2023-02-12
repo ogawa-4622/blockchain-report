@@ -1,4 +1,5 @@
-// 最初にsolidityのコンパイラーバージョンを指定する
+// SPDX-License-Identifier: MIT
+// solidityのコンパイラーバージョンを指定する
 pragma solidity ^0.8.0;
 
 // OwnableコントラクトとSafeMathライブラリを使用するためにインポートしている
