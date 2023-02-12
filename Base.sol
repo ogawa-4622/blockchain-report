@@ -47,7 +47,7 @@ contract Base is Ownable {
     // ownerToKittyマッピングに新しいkitties idを追加, msg.senderは関数を実行したイーサリウムアドレスを指す
     ownerToKitty[msg.sender] = id;
     // ownerKittyCountを更新
-    ownerKittyCount[msg.sender] = 1;
+    ownerKittyCount[msg.sender] = ownerKittyCount[msg.sender].add(1);
     // emitによって上で定義したeventを実際にトランザクションログに出力させる
     emit NewKitty(_name, 1);
   }
