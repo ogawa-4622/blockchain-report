@@ -9,7 +9,7 @@ contract Helper is Base {
 
   using SafeMath8 for uint8;
 
-  // 1 ether = 10^18 wei に変換される
+  // 1 ether = 10^18 wei に変換される、publicなので外部から確認可能
   uint public levelUpFee = 0.001 ether;
 
   // スマートコントラクトはデプロイ後は修正できない。後で変更する必要がありそうな変数は予め関数で変更可能にしておく
@@ -20,7 +20,7 @@ contract Helper is Base {
   }
 
   // viewをつけた関数はブロックチェーン上のデータを読み取るだけで更新しないのでガス代がかからない
-  // returnするデータ型を指定している
+  // returnするデータ型を指定している、変数はpublicなのでこの関数なしでも確認することは可能
   function getLevelUpFee() external view returns (uint) {
     return levelUpFee;
   }
@@ -28,9 +28,11 @@ contract Helper is Base {
   // payableをつけた関数は実行時にethを受け取ることができる、ethはこのコントラクトのアドレス(デプロイ時に確定)に保存される
   // この関数はlevelUpFeeに指定されているethを支払うことで指定したIDのKittyインスタンスをレベルアップさせる
   function levelUp(uint _kittyId) external payable {
-    // msg.valueはこの関数を実行するときに指定したethの量、これがlevelUpFeeと同額であることを条件にしている
-    require(msg.value == levelUpFee);
-    kitties[_kittyId].level = kitties[_kittyId].level.add(1);
+    // msg.valueはこの関数を実行するときに指定したethの量、これがlevelUpFeeと以上であることを条件にしている
+    require(msg.value >= levelUpFee);
+    // 送信したeth割るlevelUpFee（小数点以下切り捨て）分レベルアップする
+    uint8 up = uint8(msg.value / levelUpFee);
+    kitties[_kittyId].level = kitties[_kittyId].level.add(up);
   }
 
   // このスマートコントラクトアドレスにあるethをコントラクトをデプロイしたアドレスに移動させる関数

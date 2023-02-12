@@ -24,7 +24,7 @@ contract Base is Ownable {
 
   // Kitty構造体の配列をkittiesという名前で定義
   // これ以下のcontract変数はイーサリアムブロックチェーンに保存される。更新にはガス代が必要になる。
-  Kitty[] kitties;
+  Kitty[] public kitties;
   // ユーザのイーサリウムアドレス（キー）から、そのアドレスが所有しているkittiesのid（バリュー）を確認できるように定義
   // addressは20バイトの値であり、イーサリアムネットワーク上でのアカウントを意味する、公開鍵から作成される
   // publicに設定されている変数はこのcontract内外から値を参照することができる
