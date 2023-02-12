@@ -13,7 +13,7 @@ contract Base is Ownable {
   using SafeMath for uint;
 
   // 新しいKittyがインスタンス化されたときにトランザクションログを出して外部からその内容を確認するために記述する。
-  event NewKitty(string name, uint owner);
+  event NewKitty(string name, uint8 level);
 
   // 以下2つの変数を持つ、Kittyという構造体を定義
   struct Kitty {
